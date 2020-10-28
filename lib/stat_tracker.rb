@@ -79,23 +79,24 @@ class StatTracker < DataLibrary
   end
 
   def total_goals
-    home_goals = Hash.new(0)
-    away_goals = Hash.new(0)
+    total_goals = Hash.new {|h, k| h[k] = {home: 0, away: 0, total: 0, home_games: 0, away_games: 0, games_played: 0}}
     @game_teams.each do |game_team|
       if game_team[:hoa] == "home"
-        home_goals[game_team[:team_id]] += game_team[:goals].to_f
+        total_goals[game_team[:team_id]][:home] += game_team[:goals].to_i
+        total_goals[game_team[:team_id]][:home_games] += 1
       else
-        away_goals[game_team[:team_id]] += game_team[:goals].to_f
+        total_goals[game_team[:team_id]][:away] += game_team[:goals].to_i
+        total_goals[game_team[:team_id]][:away_games] += 1
       end
+      total_goals[game_team[:team_id]][:total] += game_team[:goals].to_i
+      total_goals[game_team[:team_id]][:games_played] += 1
     end
-    total_goals = home_goals.merge(away_goals) do |key, home, away|
-      {:home => home, :away => away, :total => home + away}
-    end
+    total_goals
   end
 
   def best_offense
     best = total_goals.max_by do |key, value|
-      value[:total]
+      value[:total].to_f / value[:games_played]
     end
     @teams.find do |team|
       if team[:team_id] == best[0]
@@ -106,7 +107,7 @@ class StatTracker < DataLibrary
 
   def worst_offense
     worst = total_goals.min_by do |key, value|
-      value[:total]
+      value[:total].to_f / value[:games_played]
     end
     @teams.find do |team|
       if team[:team_id] == worst[0]
@@ -117,7 +118,7 @@ class StatTracker < DataLibrary
 
   def highest_scoring_visitor
     best = total_goals.max_by do |key, value|
-      value[:away]
+      value[:away].to_f / value[:away_games]
     end
     @teams.find do |team|
       if team[:team_id] == best[0]
@@ -128,7 +129,7 @@ class StatTracker < DataLibrary
 
   def highest_scoring_home_team
     best = total_goals.max_by do |key, value|
-      value[:home]
+      value[:home].to_f / value[:home_games]
     end
     @teams.find do |team|
       if team[:team_id] == best[0]
@@ -139,7 +140,7 @@ class StatTracker < DataLibrary
 
   def lowest_scoring_visitor
     worst = total_goals.min_by do |key, value|
-      value[:away]
+      value[:away].to_f / value[:away_games]
     end
     @teams.find do |team|
       if team[:team_id] == worst[0]
@@ -150,7 +151,7 @@ class StatTracker < DataLibrary
 
   def lowest_scoring_home_team
     worst = total_goals.min_by do |key, value|
-      value[:home]
+      value[:home].to_f / value[:home_games]
     end
     @teams.find do |team|
       if team[:team_id] == worst[0]
