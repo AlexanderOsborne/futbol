@@ -1,0 +1,12 @@
+table, th, td {
+  border: 2px solid black;
+  text-align: center;
+}
+
+th {
+  font-weight: 900;
+}
+
+body {
+  background-color: cornsilk;
+}
