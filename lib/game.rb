@@ -1,5 +1,14 @@
 class Game
-  attr_reader :game_id, :season, :type, :date_time, :away_team_id, :home_team_id, :away_goals, :home_goals, :venue, :venue_link
+  attr_reader :game_id,
+              :season,
+              :type,
+              :date_time,
+              :away_team_id,
+              :home_team_id,
+              :away_goals,
+              :home_goals,
+              :venue,
+              :venue_link
 
   def initialize(row, parent)
     @parent = parent
@@ -18,5 +27,6 @@ class Game
   def total_score
     away_goals + home_goals
   end
+
 
 end
