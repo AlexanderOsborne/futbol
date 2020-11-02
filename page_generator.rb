@@ -12,7 +12,7 @@ class PageGenerator
     @game_stats_template = game_stats_template
     @team_stats_template = team_stats_template
     @league_stats_template = league_stats_template
-    @season_stats_template = league_stats_template
+    @season_stats_template = season_stats_template
   end
 
   def render_home_page

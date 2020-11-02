@@ -79,20 +79,30 @@ module Template
           </table>
           <table>
             <tr>
-              <th colspan="3"><h2> Games and Goals by Season </h2> </th>
+              <th colspan="2"><h2> Total number of games by Season </h2> </th>
             </tr>
             <tr>
               <th> Season </th>
               <th> Games </th>
-              <th> Goals </th>
             </tr>
             <tr>
             <% @stat_tracker.count_of_games_by_season.each do |season, games| %>
-            <tr>
                 <td><%= season %></td>
                 <td><%= games %></td>
+                </tr>
                 <% end %>
+          </table>
+          <table>
+          <tr>
+            <th colspan="2"><h2> Average number of goals per game by Season </h2></th>
+          </tr>
+          <tr>
+            <th> Season </th>
+            <th> Goals </th>
+          </tr>
+          <tr>
           <% @stat_tracker.average_goals_by_season.each do |season, goals| %>
+              <td><%= season %></td>
               <td><%= goals %></td>
             </tr>
             <% end %>
@@ -163,7 +173,29 @@ module Template
         </head>
 
         <body>
-          <h1> Team Stats </h1>
+          <table>
+            <tr>
+              <th colspan="7"><h1> League Statistics</h1></th>
+            </tr>
+            <tr>
+              <th> Number of Teams </th>
+              <th>Best Offense</th>
+              <th>Worst Offense</th>
+              <th>Highest Scoring Visitor</th>
+              <th>Highest Scoring Home Team</th>
+              <th>Lowest Scoring Visitor</th>
+              <th>Lowest Scoring Home Team</th>
+            </tr>
+            <tr>
+              <td><%= @stat_tracker.count_of_teams %></td>
+              <td><%= @stat_tracker.best_offense %></td>
+              <td><%= @stat_tracker.worst_offense %></td>
+              <td><%= @stat_tracker.highest_scoring_visitor %></td>
+              <td><%= @stat_tracker.highest_scoring_home_team %></td>
+              <td><%= @stat_tracker.lowest_scoring_visitor %></td>
+              <td><%= @stat_tracker.lowest_scoring_home_team %></td>
+            </tr>
+          </table>
         </body>
       </html>
     }
@@ -180,7 +212,35 @@ module Template
         </head>
 
         <body>
-          <h1> Team Stats </h1>
+          <table
+            <tr>
+              <th colspan="7"><h1> Season Statistics</h1></th>
+            </tr>
+            <tr>
+              <th> Season </th>
+              <th> Winningest Coach </th>
+              <th> Worst Coach </th>
+              <th> Most Accurate Team</th>
+              <th>Least Accurate Team</th>
+              <th>Most Tackles </th>
+              <th>Fewest Tackles </th>
+            </tr>
+            <% seasons = [] %>
+            <% @stat_tracker.games.games.each do |game| %>
+              <% seasons << game.season unless seasons.include?(game.season) %>
+            <% end %>
+            <tr>
+            <% seasons.each do |season| %>
+              <td><%= season %></td>
+              <td><%= @stat_tracker.winningest_coach(season) %></td>
+              <td><%= @stat_tracker.worst_coach(season) %></td>
+              <td><%= @stat_tracker.most_accurate_team(season) %></td>
+              <td><%= @stat_tracker.least_accurate_team(season) %></td>
+              <td><%= @stat_tracker.most_tackles(season) %></td>
+              <td><%= @stat_tracker.fewest_tackles(season) %></td>
+            </tr>
+            <% end %>
+          </table>
         </body>
       </html>
     }
