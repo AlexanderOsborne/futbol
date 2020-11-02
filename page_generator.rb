@@ -1,5 +1,5 @@
 require './lib/stat_tracker'
-require './home/template'
+require './site/template'
 require 'erb'
 
 class PageGenerator
@@ -48,8 +48,8 @@ locations = {
 
 page_generator = PageGenerator.new(locations)
 
-File.open('./home/index.html', 'w') {|file| file.write(page_generator.render_home_page)}
-File.open('./home/game_stats.html', 'w') {|file| file.write(page_generator.render_game_stats)}
-File.open('./home/team_stats.html', 'w') {|file| file.write(page_generator.render_team_stats)}
-File.open('./home/league_stats.html', 'w') {|file| file.write(page_generator.render_league_stats)}
-File.open('./home/season_stats.html', 'w') {|file| file.write(page_generator.render_season_stats)}
+File.open('./site/stats.html', 'w') {|file| file.write(page_generator.render_home_page)}
+File.open('./site/game_stats.html', 'w') {|file| file.write(page_generator.render_game_stats)}
+File.open('./site/team_stats.html', 'w') {|file| file.write(page_generator.render_team_stats)}
+File.open('./site/league_stats.html', 'w') {|file| file.write(page_generator.render_league_stats)}
+File.open('./site/season_stats.html', 'w') {|file| file.write(page_generator.render_season_stats)}

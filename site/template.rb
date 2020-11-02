@@ -6,7 +6,7 @@ module Template
       <head>
           <meta charset = "UTF-8">
           <link rel="stylesheet" href="stylesheet.css" />
-          <a href="./index.html" id="homePage"> Home Page</a>
+          <a href="./stats.html" id="homePage"> Home Page</a>
           <br>
           <img src="./images/futbol_statistics.png" height="100" /img>
         </head>
@@ -43,7 +43,7 @@ module Template
     %{
       <html lang="en-US">
         <head>
-        <a href="./index.html"> Home Page</a>
+        <a href="./stats.html"> Home Page</a>
           <meta charset = "UTF-8">
           <title> Game Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
@@ -116,7 +116,7 @@ module Template
     %{
       <html lang="en-US">
         <head>
-        <a href="./index.html"> Home Page</a>
+        <a href="./stats.html"> Home Page</a>
           <meta charset = "UTF-8">
           <title> Team Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
@@ -205,7 +205,7 @@ module Template
     %{
       <html lang="en-US">
         <head>
-        <a href="./index.html"> Home Page</a>
+        <a href="./stats.html"> Home Page</a>
           <meta charset = "UTF-8">
           <title> Season Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
