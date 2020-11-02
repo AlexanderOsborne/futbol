@@ -45,12 +45,12 @@ module Template
         <head>
         <a href="./index.html"> Home Page</a>
           <meta charset = "UTF-8">
-          <title> Team Statistics </title>
+          <title> Game Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
         </head>
 
         <body>
-          <h1> Team Stats </h1>
+          <h1> Game Statistics </h1>
           <table>
             <tr>
               <td> Highest Total Score </td>
@@ -79,32 +79,20 @@ module Template
           </table>
           <table>
             <tr>
-              <th colspan="2"> Count of games by Season </th>
+              <th colspan="3"><h2> Games and Goals by Season </h2> </th>
             </tr>
             <tr>
               <th> Season </th>
               <th> Games </th>
+              <th> Goals </th>
             </tr>
             <tr>
             <% @stat_tracker.count_of_games_by_season.each do |season, games| %>
             <tr>
                 <td><%= season %></td>
                 <td><%= games %></td>
-              <% end %>
-
-          </table>
-          <table>
-            <tr>
-              <th colspan="2"> Average goals per game by Season </th>
-            </tr>
-            <tr>
-              <th> Season </th>
-              <th> Average Goals </th>
-            </tr>
-
+                <% end %>
           <% @stat_tracker.average_goals_by_season.each do |season, goals| %>
-            <tr>
-              <td><%= season %></td>
               <td><%= goals %></td>
             </tr>
             <% end %>
@@ -122,19 +110,6 @@ module Template
           <meta charset = "UTF-8">
           <title> Team Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
-          <h1> Team Selection </h1>
-          <div class="dropdown">
-            <button class="
-            <button class="dropbtn">Teams</button>
-            <div class="dropdown-content">
-              <a href="#1">Atlanta United</a>
-            </div>
-          </div>
-              <select id="team_id">
-              <% @stat_tracker.teams.teams.each do |team| %>>
-                <option value = <%= team.team_id %>><%= team.teamname %></option>
-              <% end %>
-              </select>
         </head>
 
         <body>
@@ -142,7 +117,7 @@ module Template
           <br>
         <table>
           <tr>
-            <th colspan="5"> Team Info </th>
+            <th colspan="12"><h1> Team Statistics </h1></th>
           </tr>
             <tr>
             <% @stat_tracker.team_info("1").each do |key, value| %>
@@ -161,14 +136,14 @@ module Template
             <% @stat_tracker.team_info(team.team_id).each do |key, value| %>
               <td><%= value %>
             <% end %>
-            <%= @stat_tracker.best_season(team.team_id) %>
-            <%= @stat_tracker.worst_season(team.team_id) %>
-            <%= @stat_tracker.average_win_percentage(team.team_id) %>
-            <%= @stat_tracker.most_goals_scored(team.team_id) %>
-            <%= @stat_tracker.fewest_goals_scored(team.team_id) %>
-            <%= @stat_tracker.favorite_opponent(team.team_id) %>
-            <%= @stat_tracker.rival(team.team_id) %>
             </td>
+            <td><%= @stat_tracker.best_season(team.team_id) %></td>
+            <td><%= @stat_tracker.worst_season(team.team_id) %></td>
+            <td><%= @stat_tracker.average_win_percentage(team.team_id) %></td>
+            <td><%= @stat_tracker.most_goals_scored(team.team_id) %></td>
+            <td><%= @stat_tracker.fewest_goals_scored(team.team_id) %></td>
+            <td><%= @stat_tracker.favorite_opponent(team.team_id) %></td>
+            <td><%= @stat_tracker.rival(team.team_id) %></td>
             </tr>
             <% end %>
         </table>
