@@ -13,9 +13,9 @@ class Team
 
   def team_info
     new_team_info = {}
+    new_team_info["team_name"] = @teamname
     new_team_info["team_id"] = @team_id
     new_team_info["franchise_id"] = @franchiseid
-    new_team_info["team_name"] = @teamname
     new_team_info["abbreviation"] = @abbreviation
     new_team_info["link"] = @link
     new_team_info

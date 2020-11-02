@@ -122,26 +122,56 @@ module Template
           <meta charset = "UTF-8">
           <title> Team Statistics </title>
           <link rel="stylesheet" href="stylesheet.css" />
+          <h1> Team Selection </h1>
+          <div class="dropdown">
+            <button class="
+            <button class="dropbtn">Teams</button>
+            <div class="dropdown-content">
+              <a href="#1">Atlanta United</a>
+            </div>
+          </div>
+              <select id="team_id">
+              <% @stat_tracker.teams.teams.each do |team| %>>
+                <option value = <%= team.team_id %>><%= team.teamname %></option>
+              <% end %>
+              </select>
         </head>
 
         <body>
-          <h1> Team Stats </h1>
+          <br>
+          <br>
         <table>
           <tr>
-            <th colspan="2"> Team Info </th>
+            <th colspan="5"> Team Info </th>
           </tr>
-          <tr>
-            <th> Category </th>
-            <th> info </th>
-          </tr>
-            <% @stat_tracker.team_info("3").each do |key, value| %>
             <tr>
-              <td><%= key %></td>
-              <td><%= value %></td>
+            <% @stat_tracker.team_info("1").each do |key, value| %>
+              <th><%= key %></th>
+              <% end %>
+              <th>Best Season</th>
+              <th>Worst Season</th>
+              <th>Average Wins</th>
+              <th>Most Goals Scored</th>
+              <th>Fewest Goals Scored</th>
+              <th>FAVORITE OPPONENT</th>
+              <th>Least Favorite RIVAL</th>
+            <% @stat_tracker.teams.teams.each do |team| %>
+            </tr>
+            <tr>
+            <% @stat_tracker.team_info(team.team_id).each do |key, value| %>
+              <td><%= value %>
+            <% end %>
+            <%= @stat_tracker.best_season(team.team_id) %>
+            <%= @stat_tracker.worst_season(team.team_id) %>
+            <%= @stat_tracker.average_win_percentage(team.team_id) %>
+            <%= @stat_tracker.most_goals_scored(team.team_id) %>
+            <%= @stat_tracker.fewest_goals_scored(team.team_id) %>
+            <%= @stat_tracker.favorite_opponent(team.team_id) %>
+            <%= @stat_tracker.rival(team.team_id) %>
+            </td>
             </tr>
             <% end %>
         </table>
-
         </body>
       </html>
     }
