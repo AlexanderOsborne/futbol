@@ -101,54 +101,80 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Houston Dynamo", @stattracker.lowest_scoring_home_team
   end
 
-    def test_team_info
-      expected = {
-        "team_id" => "18",
-        "franchise_id" => "34",
-        "team_name" => "Minnesota United FC",
-        "abbreviation" => "MIN",
-        "link" => "/api/v1/teams/18"
-      }
-      assert_equal expected, @stattracker.team_info("18")
-    end
-#
-#   def best_season
-#   end
-#
-#   def worst_season
-#   end
-#
-#   def average_win_percentage
-#   end
-#
-#   def most_goals_scored
-#   end
-#
-#   def fewest_goals_scored
-#   end
-#
-#   def favorite_opponent
-#   end
-#
-#   def rival
-#   end
-#
-#   def winningest_coach
-#   end
-#
-#   def worst_coach
-#   end
-#
-#   def most_accurate_team
-#   end
-#
-#   def least_accurate_team
-#   end
-#
-#   def most_tackles
-#   end
-#
-#   def fewest_tackles
-#   end
-#
+  def test_team_info
+    expected = {
+      "team_id" => "18",
+      "franchise_id" => "34",
+      "team_name" => "Minnesota United FC",
+      "abbreviation" => "MIN",
+      "link" => "/api/v1/teams/18"
+    }
+    assert_equal expected, @stattracker.team_info("18")
+  end
+
+  def test_best_season
+
+    assert_equal "20132014", @stattracker.best_season("17")
+  end
+
+  def test_worst_season
+
+    assert_equal "20132014", @stattracker.worst_season("16")
+  end
+
+  def test_average_win_percentage
+
+    assert_equal 0.5, @stattracker.average_win_percentage("17")
+  end
+
+  def test_most_goals_scored
+
+    assert_equal 2, @stattracker.most_goals_scored("16")
+  end
+
+  def test_fewest_goals_scored
+
+    assert_equal 0, @stattracker.fewest_goals_scored("16")
+  end
+
+  def test_favorite_opponent
+
+    assert_equal "LA Galaxy", @stattracker.favorite_opponent("16")
+  end
+
+  def test_rival
+
+    assert_equal "Houston Dynamo", @stattracker.rival("6")
+  end
+
+  def test_winningest_coach
+
+    assert_equal "Claude Julien", @stattracker.winningest_coach("20122013")
+  end
+
+  def test_worst_coach
+
+    assert_equal "John Tortorella", @stattracker.worst_coach("20122013")
+  end
+
+  def test_most_accurate_team
+
+    assert_equal "FC Dallas", @stattracker.most_accurate_team("20122013")
+  end
+
+  def test_least_accurate_team
+
+    assert_equal "Houston Dynamo", @stattracker.least_accurate_team("20122013")
+  end
+
+  def test_most_tackles
+
+    assert_equal "Houston Dynamo", @stattracker.most_tackles("20122013")
+  end
+
+  def test_fewest_tackles
+
+    assert_equal "FC Dallas", @stattracker.fewest_tackles("20122013")
+  end
+
 end

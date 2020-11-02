@@ -101,4 +101,48 @@ class GameTeamsCollectionTest < Minitest::Test
 
     assert_equal "Houston Dynamo", @gameteamcollection.lowest_scoring_hometeam
   end
+
+  def test_wins_by_coach
+    expected = {"John Tortorella"=>{:win=>0, :loss=>5, :tie=>0}, "Claude Julien"=>{:win=>5, :loss=>0, :tie=>0}}
+
+    assert_equal expected, @gameteamcollection.wins_by_coach("20122013")
+  end
+
+  def test_winningest_coach
+
+    assert_equal "Claude Julien", @gameteamcollection.winningest_coach("20122013")
+  end
+
+  def test_worst_coach
+
+    assert_equal "John Tortorella", @gameteamcollection.worst_coach("20122013")
+  end
+
+  def test_most_accurate_team
+    expected = {"3"=>{:shots=>38, :goals=>8}, "6"=>{:shots=>46, :goals=>14}}
+
+    assert_equal expected, @gameteamcollection.shots_by_team_by_season("20122013")
+    assert_equal "FC Dallas", @gameteamcollection.most_accurate_team("20122013")
+  end
+
+  def test_least_accurate_team
+
+    assert_equal "Houston Dynamo", @gameteamcollection.least_accurate_team("20122013")
+  end
+
+  def test_teams_with_tackles
+    expected = {"3"=>179, "6"=>174}
+
+    assert_equal expected, @gameteamcollection.teams_with_tackles("20122013")
+  end
+
+  def test_most_tackles
+
+    assert_equal "Houston Dynamo", @gameteamcollection.most_tackles("20122013")
+  end
+
+  def test_fewest_tackles
+
+    assert_equal "FC Dallas", @gameteamcollection.fewest_tackles("20122013")
+  end
 end

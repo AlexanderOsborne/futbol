@@ -9,7 +9,7 @@ class GameTest < Minitest::Test
     @parent.stubs(:parent => "Parent")
     @games = []
       CSV.foreach('./data/games_dummy.csv', headers: true, header_converters: :symbol) do |row|
-      @games << Game.new(row, @parent)
+      @games << Game.new(row)
     end
   end
 
@@ -20,8 +20,8 @@ class GameTest < Minitest::Test
     assert_equal "20122013", game.season
     assert_equal "Postseason", game.type
     assert_equal "5/16/13", game.date_time
-    assert_equal 3, game.away_team_id
-    assert_equal 6, game.home_team_id
+    assert_equal "3", game.away_team_id
+    assert_equal "6", game.home_team_id
     assert_equal 2, game.away_goals
     assert_equal 3, game.home_goals
     assert_equal "Toyota Stadium", game.venue
