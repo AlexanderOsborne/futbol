@@ -1,6 +1,9 @@
 require_relative './game'
+require_relative './calculator'
 
 class GamesCollection
+  include Calculator
+
   attr_reader :games
 
   def initialize(file_path, parent)
@@ -32,7 +35,19 @@ class GamesCollection
       end
     end
   end
+#GAME STATS HELPER METHODS
+  def wins_by_hoa(hoa) #used by percentage_home_wins, percentage_visitor_wins, percentage_ties
+    games.count do |game|
+      game.winner == hoa
+    end
+  end
 
+  def seasons #used by average_goals_by_season
+    games.each_with_object(Hash.new(0)) do |game, seasons|
+      seasons[game.season] += game.total_score
+    end
+  end
+#GAME STATS
   def highest_total_score
     highest = @games.max_by do |game|
       game.total_score
@@ -48,33 +63,15 @@ class GamesCollection
   end
 
   def percentage_home_wins
-    (home_wins.to_f / @games.length).round(2)
+    (wins_by_hoa("home").to_f / @games.length).round(2)
   end
 
   def percentage_visitor_wins
-    (visitor_wins.to_f / @games.length).round(2)
+    (wins_by_hoa("away").to_f / @games.length).round(2)
   end
 
   def percentage_ties
-    (ties.to_f / @games.length).round(2)
-  end
-
-  def home_wins
-    games.count do |game|
-      game.home_goals > game.away_goals
-    end
-  end
-
-  def visitor_wins
-    games.count do |game|
-      game.home_goals < game.away_goals
-    end
-  end
-
-  def ties
-    games.count do |game|
-      game.home_goals == game.away_goals
-    end
+    (wins_by_hoa("tie").to_f / @games.length).round(2)
   end
 
   def count_of_games_by_season
@@ -93,16 +90,10 @@ class GamesCollection
   end
 
   def average_goals_by_season
-    seasons = Hash.new(0)
-    games.each do |game|
-      seasons[game.season] += game.total_score
-    end
-    count_of_games_by_season.merge(seasons) do |key, games_count, total_goals|
-      (total_goals.to_f / games_count).round(2)
-    end
+    combine(count_of_games_by_season, seasons)
   end
-
-  def games_by_team(team_id)
+#TEAM STAT HELPER METHODS
+  def games_by_team(team_id) #used by best_season, worst_season, average_win_percentage
     win = Hash.new {|h, k| h[k] = {wins: 0, total: 0}}
     @games.each do |game|
       if game.away_team_id == team_id && game.winner == "away"
@@ -118,29 +109,7 @@ class GamesCollection
     win
   end
 
-  def best_season(team_id)
-    games_by_team(team_id).max_by do |season, numbers|
-      numbers[:wins].to_f / numbers[:total]
-    end.first
-  end
-
-  def worst_season(team_id)
-    games_by_team(team_id).min_by do |season, numbers|
-      numbers[:wins].to_f / numbers[:total]
-    end.first
-  end
-
-  def average_win_percentage(team_id)
-    wins = 0
-    total = 0
-    games_by_team(team_id).each do |season, values|
-        wins += values[:wins]
-        total += values[:total]
-    end
-    (wins / total.to_f).round(2)
-  end
-
-  def goals_scored_by_team(team_id)
+  def goals_scored_by_team(team_id) #used by fewest_goals_scored, most_goals_scored
     games_with_goals = Hash.new(0)
     @games.each do |game|
       if game.away_team_id == team_id
@@ -152,19 +121,7 @@ class GamesCollection
     games_with_goals
   end
 
-  def most_goals_scored(team_id)
-    goals_scored_by_team(team_id).max_by do |key, value|
-      value
-    end.last
-  end
-
-  def fewest_goals_scored(team_id)
-    goals_scored_by_team(team_id).min_by do |key, value|
-      value
-    end.last
-  end
-
-  def games_against_opponents(team_id)
+  def games_against_opponents(team_id) #used by favorite_opponent, rival
     wins = Hash.new {|h, k| h[k] = {wins: 0, total: 0}}
     @games.each do |game|
       if game.away_team_id == team_id && game.winner == "home"
@@ -185,18 +142,32 @@ class GamesCollection
     end
     wins
   end
+#TEAM STATS
+  def best_season(team_id)
+    max_avg(games_by_team(team_id)).first
+  end
+
+  def worst_season(team_id)
+    min_avg(games_by_team(team_id)).first
+  end
+
+  def average_win_percentage(team_id)
+    win_pct(games_by_team(team_id))
+  end
+
+  def most_goals_scored(team_id)
+    high(goals_scored_by_team(team_id)).last
+  end
+
+  def fewest_goals_scored(team_id)
+    low(goals_scored_by_team(team_id)).last
+  end
 
   def favorite_opponent(team_id)
-    opponent = games_against_opponents(team_id).min_by do |opp, numbers|
-      numbers[:wins].to_f / numbers[:total]
-    end
-    @parent.find_by_id(opponent.first)
+    min_avg(games_against_opponents(team_id)).first
   end
 
   def rival(team_id)
-    rival = games_against_opponents(team_id).max_by do |opp, numbers|
-      numbers[:wins].to_f / numbers[:total]
-    end
-    @parent.find_by_id(rival.first)
+    max_avg(games_against_opponents(team_id)).first
   end
 end
