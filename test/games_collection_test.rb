@@ -1,6 +1,5 @@
 require_relative './test_helper'
 require './lib/games_collection'
-require 'csv'
 
 class GamesCollectionTest < Minitest::Test
 

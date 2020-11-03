@@ -5,8 +5,7 @@ class GameTeamsCollectionTest < Minitest::Test
 
   def setup
     @parent = mock("Collection")
-    # @parent.stubs(:find_team_name, "3").returns("FC Dallas")
-    # @parent.stubs(:find_team_name, "6").returns("Houston Dynamo")
+
     @parent.stubs(:find_season_id).returns(["2012030221", "2012030222", "2012030223", "2012030224", "2012030225"])
     @parent.stubs(:find_team_name, "2012030221").returns("20122013")
 
