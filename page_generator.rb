@@ -15,24 +15,24 @@ class PageGenerator
     @season_stats_template = season_stats_template
   end
 
-  def render_home_page
-    ERB.new(@home_page_template).result(binding)
+  def home_page
+    File.open('./site/stats.html', 'w') {|io| io.write(ERB.new(@home_page_template).result(binding))}
   end
 
-  def render_game_stats
-    ERB.new(@game_stats_template).result(binding)
+  def game_stats
+    File.open('./site/game_stats.html', 'w') {|io| io.write(ERB.new(@game_stats_template).result(binding))}
   end
 
-  def render_team_stats
-    ERB.new(@team_stats_template).result(binding)
+  def team_stats
+    File.open('./site/team_stats.html', 'w') {|io| io.write(ERB.new(@team_stats_template).result(binding))}
   end
 
-  def render_league_stats
-    ERB.new(@league_stats_template).result(binding)
+  def league_stats
+    File.open('./site/league_stats.html', 'w') {|io| io.write(ERB.new(@league_stats_template).result(binding))}
   end
 
-  def render_season_stats
-    ERB.new(@season_stats_template).result(binding)
+  def season_stats
+    File.open('./site/season_stats.html', 'w') {|io| io.write(ERB.new(@season_stats_template).result(binding))}
   end
 end
 
@@ -47,9 +47,3 @@ locations = {
 }
 
 page_generator = PageGenerator.new(locations)
-
-File.open('./site/stats.html', 'w') {|file| file.write(page_generator.render_home_page)}
-File.open('./site/game_stats.html', 'w') {|file| file.write(page_generator.render_game_stats)}
-File.open('./site/team_stats.html', 'w') {|file| file.write(page_generator.render_team_stats)}
-File.open('./site/league_stats.html', 'w') {|file| file.write(page_generator.render_league_stats)}
-File.open('./site/season_stats.html', 'w') {|file| file.write(page_generator.render_season_stats)}

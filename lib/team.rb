@@ -10,15 +10,6 @@ class Team
   end
 
   def team_info
-<<<<<<< HEAD
-    new_team_info = {}
-    new_team_info["team_name"] = @teamname
-    new_team_info["team_id"] = @team_id
-    new_team_info["franchise_id"] = @franchiseid
-    new_team_info["abbreviation"] = @abbreviation
-    new_team_info["link"] = @link
-    new_team_info
-=======
     {
     "team_id" => @team_id,
     "franchise_id"=> @franchiseid,
@@ -26,6 +17,5 @@ class Team
     "abbreviation"=> @abbreviation,
     "link"=> @link
     }
->>>>>>> 91956d517903ac19c73d1c2d4dd49bfdef9c4566
   end
 end
