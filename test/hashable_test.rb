@@ -1,9 +1,12 @@
 require_relative './test_helper'
 require './lib/hashable'
 require './lib/game_team'
+require './lib/calculator'
 
 class HashableTest < Minitest::Test
   include Hashable
+  include Calculator
+
 
   def setup
     @game_teams = CSV.foreach('./data/game_teams_dummy.csv', headers: true, header_converters: :symbol).map do |row|
@@ -38,5 +41,53 @@ class HashableTest < Minitest::Test
     end
 
     assert_equal true, actual
+  end
+
+  def test_games_by_team
+
+    expected = {"3"=>5, "6"=>5}
+    assert_equal expected, games_by_team
+  end
+
+  def test_away_games_by_team
+
+    expected = {"3"=>3, "6"=>2}
+    assert_equal expected, away_games_by_team
+  end
+
+  def test_goal_total_by_hoa
+    assert_equal ({"6"=>9, "3"=>3}), goal_total_by_hoa("home")
+    assert_equal ({"3"=>5, "6"=>5}), goal_total_by_hoa("away")
+    assert_equal ({"3"=>8, "6"=>14}), goal_total_by_hoa
+  end
+
+  def test_games_by_hoa
+    assert_equal ({"6"=>3, "3"=>2}), games_by_hoa("home")
+    assert_equal ({"3"=>3, "6"=>2}), games_by_hoa("away")
+    assert_equal ({"3"=>5, "6"=>5}), games_by_hoa
+  end
+
+  def test_home_games_by_team
+
+    expected = {"6"=>3, "3"=>2}
+    assert_equal expected, home_games_by_team
+  end
+
+  def test_average_goals_by_team
+
+    expected = {"3"=>1.6, "6"=>2.8}
+    assert_equal expected, average_goals_by_team
+  end
+
+  def test_average_away_goals_by_team
+
+    expected = {"3"=>1.67, "6"=>2.5}
+    assert_equal expected, average_away_goals_by_team
+  end
+
+  def test_average_home_goals_by_team
+
+    expected ={"6"=>3.0, "3"=>1.5}
+    assert_equal expected, average_home_goals_by_team
   end
 end
