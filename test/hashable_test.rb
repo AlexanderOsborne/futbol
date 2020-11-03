@@ -7,7 +7,6 @@ class HashableTest < Minitest::Test
   include Hashable
   include Calculator
 
-
   def setup
     @game_teams = CSV.foreach('./data/game_teams_dummy.csv', headers: true, header_converters: :symbol).map do |row|
       GameTeam.new(row)

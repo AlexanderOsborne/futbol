@@ -72,5 +72,4 @@ module Hashable
   def average_home_goals_by_team
     combine(home_games_by_team, goal_total_by_hoa("home"))
   end
-
 end
