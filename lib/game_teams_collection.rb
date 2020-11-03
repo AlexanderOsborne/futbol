@@ -126,19 +126,17 @@ class GameTeamsCollection
     max_avg(shots_by_team_by_season(season_id)).first
   end
 
-  def teams_with_tackles(season_id)
-    game_ids = game_ids_by_season(season_id)
-    game_teams.each_with_object(Hash.new(0)) do |game_team, teams|
-      next if !game_ids.include?(game_team.game_id)
-      teams[game_team.team_id] += game_team.tackles
-    end
-  end
-
   def most_tackles(season_id)
-    high(teams_with_tackles(season_id)).first
+    SeasonStats.most_tackles(game_teams_by_season(season_id))
   end
 
   def fewest_tackles(season_id)
-    low(teams_with_tackles(season_id)).first
+    SeasonStats.fewest_tackles(game_teams_by_season(season_id))
+  end
+
+  def game_teams_by_season(season_id)
+    @game_teams.select do |game_team|
+      game_team.game_id[0..3] == season_id[0..3]
+    end
   end
 end

@@ -19,7 +19,6 @@ class GamesCollectionTest < Minitest::Test
 
   def test_create_games
 
-    @gamescollection.create_games('./data/games_dummy.csv')
     assert_equal 13, @gamescollection.games.length
   end
 

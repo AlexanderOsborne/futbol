@@ -1,4 +1,5 @@
 require_relative './test_helper'
+require './lib/season_stats'
 require './lib/game_teams_collection'
 
 class GameTeamsCollectionTest < Minitest::Test
@@ -137,12 +138,6 @@ class GameTeamsCollectionTest < Minitest::Test
     assert_equal "3", @gameteamcollection.least_accurate_team("20122013")
   end
 
-  def test_teams_with_tackles
-    expected = {"3"=>179, "6"=>174}
-
-    assert_equal expected, @gameteamcollection.teams_with_tackles("20122013")
-  end
-
   def test_most_tackles
 
     assert_equal "3", @gameteamcollection.most_tackles("20122013")
@@ -151,5 +146,14 @@ class GameTeamsCollectionTest < Minitest::Test
   def test_fewest_tackles
 
     assert_equal "6", @gameteamcollection.fewest_tackles("20122013")
+  end
+
+  def test_game_teams_by_season
+
+    actual = @gameteamcollection.game_teams_by_season("20122013").all? do |game_team|
+      game_team.class == GameTeam
+    end
+
+    assert_equal true, actual
   end
 end
