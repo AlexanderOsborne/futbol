@@ -109,21 +109,12 @@ class GameTeamsCollection
     min_avg(wins_by_coach(season_id)).first
   end
 
-  def shots_by_team_by_season(season_id)
-    game_ids = game_ids_by_season(season_id)
-    game_teams.each_with_object(Hash.new {|h, k| h[k] = {success: 0, total: 0}}) do |game_team, stat|
-      next if !game_ids.include?(game_team.game_id)
-      stat[game_team.team_id][:success] += game_team.shots
-      stat[game_team.team_id][:total] += game_team.goals
-    end
-  end
-
   def most_accurate_team(season_id)
-    min_avg(shots_by_team_by_season(season_id)).first
+    SeasonStats.most_accurate_team(game_teams_by_season(season_id))
   end
 
   def least_accurate_team(season_id)
-    max_avg(shots_by_team_by_season(season_id)).first
+    SeasonStats.least_accurate_team(game_teams_by_season(season_id))
   end
 
   def most_tackles(season_id)

@@ -129,7 +129,6 @@ class GameTeamsCollectionTest < Minitest::Test
   def test_most_accurate_team
     expected = {"3"=>{:success=>38, :total=>8}, "6"=>{:success=>46, :total=>14}}
 
-    assert_equal expected, @gameteamcollection.shots_by_team_by_season("20122013")
     assert_equal "6", @gameteamcollection.most_accurate_team("20122013")
   end
 

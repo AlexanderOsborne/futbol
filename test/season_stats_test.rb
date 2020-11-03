@@ -26,4 +26,20 @@ class SeasonStatsTest < Minitest::Test
 
     assert_equal expected, SeasonStats.teams_with_tackles(@game_teams)
   end
+
+  def test_most_accurate_team
+
+    assert_equal "6", SeasonStats.most_accurate_team(@game_teams)
+  end
+
+  def test_least_accurate_team
+
+    assert_equal "3", SeasonStats.least_accurate_team(@game_teams)
+  end
+
+  def test_shots_by_team_by_season
+    expected = {"3"=>{:success=>38, :total=>8}, "6"=>{:success=>46, :total=>14}}
+
+    assert_equal expected, SeasonStats.shots_by_team_by_season(@game_teams)
+  end
 end
