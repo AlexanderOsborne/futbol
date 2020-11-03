@@ -1,5 +1,5 @@
 require_relative './test_helper'
-require './lib/season_stats'
+require './lib/hashable'
 require './lib/game_teams_collection'
 
 class GameTeamsCollectionTest < Minitest::Test
