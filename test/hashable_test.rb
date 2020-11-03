@@ -1,9 +1,9 @@
 require_relative './test_helper'
-require './lib/season_stats'
+require './lib/hashable'
 require './lib/game_team'
 
-class SeasonStatsTest < Minitest::Test
-  include SeasonStats
+class HashableTest < Minitest::Test
+  include Hashable
 
   def setup
     @game_teams = CSV.foreach('./data/game_teams_dummy.csv', headers: true, header_converters: :symbol).map do |row|

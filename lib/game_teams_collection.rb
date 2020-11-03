@@ -1,10 +1,10 @@
 require_relative './game_team'
 require_relative './calculator'
-require_relative './season_stats'
+require_relative './hashable'
 
 class GameTeamsCollection
   include Calculator
-  include SeasonStats
+  include Hashable
 
   attr_reader :game_teams
   def initialize(game_teams_path)

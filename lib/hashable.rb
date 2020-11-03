@@ -1,7 +1,4 @@
-require_relative './calculator'
-
-module SeasonStats
-  extend Calculator
+module Hashable
 
   def teams_with_tackles(season_id)
     game_teams_by_season(season_id).each_with_object(Hash.new(0)) do |game_team, teams|
