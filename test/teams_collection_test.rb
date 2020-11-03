@@ -5,7 +5,8 @@ require './lib/teams_collection'
 class TeamsCollectionTest < Minitest::Test
 
   def setup
-    @teamscollection = TeamsCollection.new('./data/teams.csv', self)
+    @parent = mock("Collection")
+    @teamscollection = TeamsCollection.new('./data/teams.csv', @parent)
   end
 
   def test_it_exists
@@ -21,11 +22,6 @@ class TeamsCollectionTest < Minitest::Test
   def test_all_games
 
     assert_equal 32, @teamscollection.teams.length
-  end
-
-  def test_find_by_id
-
-    assert_equal "Minnesota United FC", @teamscollection.find_by_id("18")
   end
 
   def test_count_of_teams
