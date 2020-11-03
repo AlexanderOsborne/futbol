@@ -5,10 +5,10 @@ class GameTeamsCollectionTest < Minitest::Test
 
   def setup
     @parent = mock("Collection")
-    # @parent.stubs(:find_by_id, "3").returns("FC Dallas")
-    # @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
+    # @parent.stubs(:find_team_name, "3").returns("FC Dallas")
+    # @parent.stubs(:find_team_name, "6").returns("Houston Dynamo")
     @parent.stubs(:find_season_id).returns(["2012030221", "2012030222", "2012030223", "2012030224", "2012030225"])
-    @parent.stubs(:find_by_id, "2012030221").returns("20122013")
+    @parent.stubs(:find_team_name, "2012030221").returns("20122013")
 
     @gameteamcollection = GameTeamsCollection.new('./data/game_teams_dummy.csv', @parent)
   end
@@ -22,9 +22,9 @@ class GameTeamsCollectionTest < Minitest::Test
     assert_instance_of GameTeam, @gameteamcollection.game_teams[0]
   end
 
-  def test_find_by_id
+  def test_find_team_name
 
-    assert_equal "20122013", @gameteamcollection.find_by_id("2012030221")
+    assert_equal "20122013", @gameteamcollection.find_team_name("2012030221")
   end
 
   def test_all_games
@@ -42,6 +42,18 @@ class GameTeamsCollectionTest < Minitest::Test
 
     expected = {"3"=>3, "6"=>2}
     assert_equal expected, @gameteamcollection.away_games_by_team
+  end
+
+  def test_goal_total_by_hoa
+    assert_equal ({"6"=>9, "3"=>3}), @gameteamcollection.goal_total_by_hoa("home")
+    assert_equal ({"3"=>5, "6"=>5}), @gameteamcollection.goal_total_by_hoa("away")
+    assert_equal ({"3"=>8, "6"=>14}), @gameteamcollection.goal_total_by_hoa
+  end
+
+  def test_games_by_hoa
+    assert_equal ({"6"=>3, "3"=>2}), @gameteamcollection.games_by_hoa("home")
+    assert_equal ({"3"=>3, "6"=>2}), @gameteamcollection.games_by_hoa("away")
+    assert_equal ({"3"=>5, "6"=>5}), @gameteamcollection.games_by_hoa
   end
 
   def test_home_games_by_team
@@ -69,43 +81,37 @@ class GameTeamsCollectionTest < Minitest::Test
   end
 
   def test_best_offense
-    @parent.stubs(:find_by_id, "3").returns("FC Dallas")
 
-    assert_equal "FC Dallas", @gameteamcollection.best_offense
+    assert_equal "6", @gameteamcollection.best_offense
   end
 
   def test_worst_offense
-    @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
 
-    assert_equal "Houston Dynamo", @gameteamcollection.worst_offense
+    assert_equal "3", @gameteamcollection.worst_offense
   end
 
   def test_highest_scoring_visitor
-    @parent.stubs(:find_by_id, "3").returns("FC Dallas")
 
-    assert_equal "FC Dallas", @gameteamcollection.highest_scoring_visitor
+    assert_equal "6", @gameteamcollection.highest_scoring_visitor
   end
 
   def test_highest_scoring_hometeam
-    @parent.stubs(:find_by_id, "6").returns("FC Dallas")
 
-    assert_equal "FC Dallas", @gameteamcollection.highest_scoring_hometeam
+    assert_equal "6", @gameteamcollection.highest_scoring_hometeam
   end
 
   def test_lowest_scoring_visitor
-    @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
 
-    assert_equal "Houston Dynamo", @gameteamcollection.lowest_scoring_visitor
+    assert_equal "3", @gameteamcollection.lowest_scoring_visitor
   end
 
   def test_lowest_scoring_home_team
-    @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
 
-    assert_equal "Houston Dynamo", @gameteamcollection.lowest_scoring_hometeam
+    assert_equal "3", @gameteamcollection.lowest_scoring_hometeam
   end
 
   def test_wins_by_coach
-    expected = {"John Tortorella"=>{:win=>0, :loss=>5, :tie=>0}, "Claude Julien"=>{:win=>5, :loss=>0, :tie=>0}}
+    expected = {"John Tortorella"=>{:success=>0, :total=>5}, "Claude Julien"=>{:success=>5, :total=>5}}
 
     assert_equal expected, @gameteamcollection.wins_by_coach("20122013")
   end
@@ -121,17 +127,15 @@ class GameTeamsCollectionTest < Minitest::Test
   end
 
   def test_most_accurate_team
-    @parent.stubs(:find_by_id, "3").returns("FC Dallas")
-    expected = {"3"=>{:shots=>38, :goals=>8}, "6"=>{:shots=>46, :goals=>14}}
+    expected = {"3"=>{:success=>38, :total=>8}, "6"=>{:success=>46, :total=>14}}
 
     assert_equal expected, @gameteamcollection.shots_by_team_by_season("20122013")
-    assert_equal "FC Dallas", @gameteamcollection.most_accurate_team("20122013")
+    assert_equal "6", @gameteamcollection.most_accurate_team("20122013")
   end
 
   def test_least_accurate_team
-    @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
 
-    assert_equal "Houston Dynamo", @gameteamcollection.least_accurate_team("20122013")
+    assert_equal "3", @gameteamcollection.least_accurate_team("20122013")
   end
 
   def test_teams_with_tackles
@@ -141,14 +145,12 @@ class GameTeamsCollectionTest < Minitest::Test
   end
 
   def test_most_tackles
-    @parent.stubs(:find_by_id, "6").returns("Houston Dynamo")
 
-    assert_equal "Houston Dynamo", @gameteamcollection.most_tackles("20122013")
+    assert_equal "3", @gameteamcollection.most_tackles("20122013")
   end
 
   def test_fewest_tackles
-    @parent.stubs(:find_by_id, "3").returns("FC Dallas")
 
-    assert_equal "FC Dallas", @gameteamcollection.fewest_tackles("20122013")
+    assert_equal "6", @gameteamcollection.fewest_tackles("20122013")
   end
 end

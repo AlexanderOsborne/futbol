@@ -17,15 +17,11 @@ class StatTracker
   end
 
   def find_team_name(team_id)
-    @teams.find_team_name
+    @teams.find_team_name(team_id)
   end
 
   def find_season_id(id)
     @games.find_season_id(id)
-  end
-
-  def find_by_id(id)
-    @teams.find_by_id(id) || @games.find_by_id(id)
   end
 
   def highest_total_score
@@ -65,27 +61,27 @@ class StatTracker
   end
 
   def best_offense
-    @game_teams.best_offense
+    find_team_name(@game_teams.best_offense)
   end
 
   def worst_offense
-    @game_teams.worst_offense
+    find_team_name(@game_teams.worst_offense)
   end
 
   def highest_scoring_visitor
-    @game_teams.highest_scoring_visitor
+    find_team_name(@game_teams.highest_scoring_visitor)
   end
 
   def highest_scoring_home_team
-    @game_teams.highest_scoring_hometeam
+    find_team_name(@game_teams.highest_scoring_hometeam)
   end
 
   def lowest_scoring_visitor
-    @game_teams.lowest_scoring_visitor
+    find_team_name(@game_teams.lowest_scoring_visitor)
   end
 
   def lowest_scoring_home_team
-    @game_teams.lowest_scoring_hometeam
+    find_team_name(@game_teams.lowest_scoring_hometeam)
   end
 
   def team_info(team_id)
@@ -113,11 +109,11 @@ class StatTracker
   end
 
   def favorite_opponent(team_id)
-    find_by_id(@games.favorite_opponent(team_id))
+    find_team_name(@games.favorite_opponent(team_id))
   end
 
   def rival(team_id)
-    find_by_id(@games.rival(team_id))
+    find_team_name(@games.rival(team_id))
   end
 
   def winningest_coach(season_id)
@@ -129,19 +125,18 @@ class StatTracker
   end
 
   def most_accurate_team(season_id)
-    @game_teams.most_accurate_team(season_id)
+    find_team_name(@game_teams.most_accurate_team(season_id))
   end
 
   def least_accurate_team(season_id)
-    @game_teams.least_accurate_team(season_id)
+    find_team_name(@game_teams.least_accurate_team(season_id))
   end
 
   def most_tackles(season_id)
-    @game_teams.most_tackles(season_id)
+    find_team_name(@game_teams.most_tackles(season_id))
   end
 
   def fewest_tackles(season_id)
-    @game_teams.fewest_tackles(season_id)
+    find_team_name(@game_teams.fewest_tackles(season_id))
   end
-
 end

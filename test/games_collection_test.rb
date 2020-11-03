@@ -23,12 +23,7 @@ class GamesCollectionTest < Minitest::Test
   def test_create_games
 
     @gamescollection.create_games('./data/games_dummy.csv')
-    assert_equal 26, @gamescollection.games.length
-  end
-
-  def test_find_by_id
-
-    assert_equal "20122013", @gamescollection.find_by_id("2012030221")
+    assert_equal 13, @gamescollection.games.length
   end
 
   def test_highest_total_score
@@ -61,26 +56,10 @@ class GamesCollectionTest < Minitest::Test
     assert_equal 13, @gamescollection.games.length
   end
 
-  def test_home_wins
+  def test_wins_by_hoa
     assert_equal 7, @gamescollection.wins_by_hoa("home")
     assert_equal 5, @gamescollection.wins_by_hoa("away")
     assert_equal 1, @gamescollection.wins_by_hoa("tie")
-  end
-
-  def test_visitor_wins
-  end
-
-  def test_ties
-  end
-
-  def test_game_ids_by_season
-    game_ids_by_season = 
-    assert_equal
-  end
-
-  def test_game_ids_by_season
-    game_ids_by_season = 
-    assert_equal
   end
 
   def test_count_of_games_by_season
@@ -132,9 +111,14 @@ class GamesCollectionTest < Minitest::Test
     assert_equal 0, @gamescollection.fewest_goals_scored("16")
   end
 
-  def test_games_against_opponents
-    expected = {"17"=>{:wins=>2, :total=>3}}
-    assert_equal expected, @gamescollection.games_against_opponents("16")
+  def test_team_wins_by_opponent
+    expected = {"17"=>{:success=>1, :total=>4}}
+    assert_equal expected, @gamescollection.team_wins_by_opponent("16")
+  end
+
+  def test_team_wins_by_season
+    expected = {"17"=>{:success=>1, :total=>4}}
+    assert_equal expected, @gamescollection.team_wins_by_opponent("16")
   end
 
   def test_favorite_opponent

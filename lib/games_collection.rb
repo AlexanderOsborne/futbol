@@ -8,13 +8,12 @@ class GamesCollection
 
   def initialize(file_path, parent)
     @parent = parent
-    @games = []
-    create_games(file_path)
+    @games = create_games(file_path)
   end
 
   def create_games(file_path)
-    CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
-      @games << Game.new(row)
+    CSV.foreach(file_path, headers: true, header_converters: :symbol).map do |row|
+      Game.new(row)
     end
   end
 
@@ -28,26 +27,18 @@ class GamesCollection
     game_ids
   end
 
-  def find_by_id(id)
-    games.find do |game|
-      if game.game_id == id
-        return game.season
-      end
-    end
-  end
-#GAME STATS HELPER METHODS
-  def wins_by_hoa(hoa) #used by percentage_home_wins, percentage_visitor_wins, percentage_ties
+  def wins_by_hoa(hoa)
     games.count do |game|
       game.winner == hoa
     end
   end
 
-  def seasons #used by average_goals_by_season
+  def seasons
     games.each_with_object(Hash.new(0)) do |game, seasons|
       seasons[game.season] += game.total_score
     end
   end
-#GAME STATS
+
   def highest_total_score
     highest = @games.max_by do |game|
       game.total_score
@@ -92,24 +83,16 @@ class GamesCollection
   def average_goals_by_season
     combine(count_of_games_by_season, seasons)
   end
-#TEAM STAT HELPER METHODS
-  def games_by_team(team_id) #used by best_season, worst_season, average_win_percentage
-    win = Hash.new {|h, k| h[k] = {wins: 0, total: 0}}
-    @games.each do |game|
-      if game.away_team_id == team_id && game.winner == "away"
-        win[game.season][:wins] += 1
-        win[game.season][:total] += 1
-      elsif game.home_team_id == team_id && game.winner == "home"
-        win[game.season][:wins] += 1
-        win[game.season][:total] += 1
-      elsif game.away_team_id == team_id || game.home_team_id == team_id
-        win[game.season][:total] += 1
-      end
+
+  def team_wins_by_season(team_id)
+    @games.each_with_object(Hash.new {|h, k| h[k] = {success: 0, total: 0}}) do |game, wins|
+      next if !game.teams.include?(team_id)
+      wins[game.season][:total] += 1
+      wins[game.season][:success] += 1 if game.won_game?(team_id)
     end
-    win
   end
 
-  def goals_scored_by_team(team_id) #used by fewest_goals_scored, most_goals_scored
+  def goals_scored_by_team(team_id)
     games_with_goals = Hash.new(0)
     @games.each do |game|
       if game.away_team_id == team_id
@@ -121,38 +104,24 @@ class GamesCollection
     games_with_goals
   end
 
-  def games_against_opponents(team_id) #used by favorite_opponent, rival
-    wins = Hash.new {|h, k| h[k] = {wins: 0, total: 0}}
-    @games.each do |game|
-      if game.away_team_id == team_id && game.winner == "home"
-        wins[game.home_team_id][:wins] += 1
-        wins[game.home_team_id][:total] += 1
-      elsif game.home_team_id == team_id && game.winner == "away"
-        wins[game.away_team_id][:wins] += 1
-        wins[game.away_team_id][:total] += 1
-      elsif game.away_team_id == team_id && game.winner == "tied"
-        wins[game.home_team_id][:total] += 1
-      elsif game.home_team_id == team_id && game.winner == "tied"
-        wins[game.away_team_id][:total] += 1
-      elsif game.away_team_id == team_id && game.winner == "away"
-        wins[game.home_team_id][:total] += 1
-      elsif game.home_team_id == team_id && game.winner == "home"
-        wins[game.away_team_id][:total] += 1
-      end
+  def team_wins_by_opponent(team_id)
+    @games.each_with_object(Hash.new {|h, k| h[k] = {success: 0, total: 0}}) do |game, wins|
+      next if !game.teams.include?(team_id)
+      wins[game.opponent(team_id)][:total] += 1
+      wins[game.opponent(team_id)][:success] += 1 if game.won_game?(team_id)
     end
-    wins
   end
-#TEAM STATS
+
   def best_season(team_id)
-    max_avg(games_by_team(team_id)).first
+    max_avg(team_wins_by_season(team_id)).first
   end
 
   def worst_season(team_id)
-    min_avg(games_by_team(team_id)).first
+    min_avg(team_wins_by_season(team_id)).first
   end
 
   def average_win_percentage(team_id)
-    win_pct(games_by_team(team_id))
+    win_pct(team_wins_by_season(team_id))
   end
 
   def most_goals_scored(team_id)
@@ -164,10 +133,10 @@ class GamesCollection
   end
 
   def favorite_opponent(team_id)
-    min_avg(games_against_opponents(team_id)).first
+    max_avg(team_wins_by_opponent(team_id)).first
   end
 
   def rival(team_id)
-    max_avg(games_against_opponents(team_id)).first
+    min_avg(team_wins_by_opponent(team_id)).first
   end
 end

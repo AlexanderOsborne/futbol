@@ -21,17 +21,29 @@ class GameTest < Minitest::Test
     assert_instance_of Game, @game
     assert_equal "2012030221", @game.game_id
     assert_equal "20122013", @game.season
-    assert_equal "Postseason", @game.type
-    assert_equal "5/16/13", @game.date_time
     assert_equal "3", @game.away_team_id
     assert_equal "6", @game.home_team_id
     assert_equal 2, @game.away_goals
     assert_equal 3, @game.home_goals
-    assert_equal "Toyota Stadium", @game.venue
   end
 
   def test_total_score
     assert_equal 5, @game.total_score
+  end
+
+  def test_won_game
+    assert_equal false, @game.won_game?("3")
+    assert_equal true, @game.won_game?("6")
+    assert_equal false, @game.won_game?("7")
+  end
+
+  def test_opponent
+    assert_equal "6", @game.opponent("3")
+    assert_equal "3", @game.opponent("6")
+  end
+
+  def test_teams
+    assert_equal ["6", "3"], @game.teams
   end
 
   def test_winner
