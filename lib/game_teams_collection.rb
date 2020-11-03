@@ -5,8 +5,7 @@ class GameTeamsCollection
   include Calculator
 
   attr_reader :game_teams
-  def initialize(game_teams_path, parent)
-    @parent = parent
+  def initialize(game_teams_path)
     @game_teams = create_game_teams(game_teams_path)
   end
 
@@ -14,10 +13,6 @@ class GameTeamsCollection
     CSV.foreach(game_teams_path, headers: true, header_converters: :symbol).map do |row|
       GameTeam.new(row)
     end
-  end
-
-  def find_team_name(id)
-    @parent.find_team_name(id)
   end
 
   def games_by_team
@@ -86,10 +81,6 @@ class GameTeamsCollection
 
   def lowest_scoring_hometeam
     low(average_home_goals_by_team).first
-  end
-
-  def game_ids_by_season(id)
-    @parent.find_season_id(id)
   end
 
   def winningest_coach(season_id)
