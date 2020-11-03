@@ -5,8 +5,7 @@ require './lib/teams_collection'
 class TeamsCollectionTest < Minitest::Test
 
   def setup
-    @parent = mock("Collection")
-    @teamscollection = TeamsCollection.new('./data/teams.csv', @parent)
+    @teamscollection = TeamsCollection.new('./data/teams.csv')
   end
 
   def test_it_exists
@@ -14,9 +13,13 @@ class TeamsCollectionTest < Minitest::Test
     assert_instance_of TeamsCollection, @teamscollection
   end
 
-  def test_first_game
+  def test_teams_class
 
-    assert_instance_of Team, @teamscollection.teams[0]
+    actual = @teamscollection.teams.all? do |team|
+      team.class == Team
+    end
+
+    assert_equal true, actual
   end
 
   def test_all_games
@@ -38,6 +41,7 @@ class TeamsCollectionTest < Minitest::Test
       "abbreviation" => "MIN",
       "link" => "/api/v1/teams/18"
     }
+    
     assert_equal expected, @teamscollection.team_info("18")
   end
 end
