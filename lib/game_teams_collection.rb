@@ -1,8 +1,10 @@
 require_relative './game_team'
 require_relative './calculator'
+require_relative './season_stats'
 
 class GameTeamsCollection
   include Calculator
+  include SeasonStats
 
   attr_reader :game_teams
   def initialize(game_teams_path)
@@ -84,32 +86,26 @@ class GameTeamsCollection
   end
 
   def winningest_coach(season_id)
-    SeasonStats.winningest_coach(game_teams_by_season(season_id))
+    max_avg(wins_by_coach(season_id)).first
   end
 
   def worst_coach(season_id)
-    SeasonStats.worst_coach(game_teams_by_season(season_id))
+    min_avg(wins_by_coach(season_id)).first
   end
 
   def most_accurate_team(season_id)
-    SeasonStats.most_accurate_team(game_teams_by_season(season_id))
+    min_avg(shots_by_team_by_season(season_id)).first
   end
 
   def least_accurate_team(season_id)
-    SeasonStats.least_accurate_team(game_teams_by_season(season_id))
-  end
-
-  def most_tackles(season_id)
-    SeasonStats.most_tackles(game_teams_by_season(season_id))
+    max_avg(shots_by_team_by_season(season_id)).first
   end
 
   def fewest_tackles(season_id)
-    SeasonStats.fewest_tackles(game_teams_by_season(season_id))
+    low(teams_with_tackles(season_id)).first
   end
 
-  def game_teams_by_season(season_id)
-    @game_teams.select do |game_team|
-      game_team.game_id[0..3] == season_id[0..3]
-    end
+  def most_tackles(season_id)
+    high(teams_with_tackles(season_id)).first
   end
 end

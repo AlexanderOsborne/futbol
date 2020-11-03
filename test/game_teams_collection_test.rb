@@ -130,13 +130,4 @@ class GameTeamsCollectionTest < Minitest::Test
 
     assert_equal "6", @gameteamcollection.fewest_tackles("20122013")
   end
-
-  def test_game_teams_by_season
-
-    actual = @gameteamcollection.game_teams_by_season("20122013").all? do |game_team|
-      game_team.class == GameTeam
-    end
-
-    assert_equal true, actual
-  end
 end
