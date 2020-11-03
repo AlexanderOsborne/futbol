@@ -110,12 +110,6 @@ class GameTeamsCollectionTest < Minitest::Test
     assert_equal "3", @gameteamcollection.lowest_scoring_hometeam
   end
 
-  def test_wins_by_coach
-    expected = {"John Tortorella"=>{:success=>0, :total=>5}, "Claude Julien"=>{:success=>5, :total=>5}}
-
-    assert_equal expected, @gameteamcollection.wins_by_coach("20122013")
-  end
-
   def test_winningest_coach
 
     assert_equal "Claude Julien", @gameteamcollection.winningest_coach("20122013")

@@ -42,4 +42,20 @@ class SeasonStatsTest < Minitest::Test
 
     assert_equal expected, SeasonStats.shots_by_team_by_season(@game_teams)
   end
+
+  def test_wins_by_coach
+    expected = {"John Tortorella"=>{:success=>0, :total=>5}, "Claude Julien"=>{:success=>5, :total=>5}}
+
+    assert_equal expected, SeasonStats.wins_by_coach(@game_teams)
+  end
+
+  def test_winningest_coach
+
+    assert_equal "Claude Julien", SeasonStats.winningest_coach(@game_teams)
+  end
+
+  def test_worst_coach
+
+    assert_equal "John Tortorella", SeasonStats.worst_coach(@game_teams)
+  end
 end

@@ -92,21 +92,12 @@ class GameTeamsCollection
     @parent.find_season_id(id)
   end
 
-  def wins_by_coach(season_id)
-    game_ids = game_ids_by_season(season_id)
-    @game_teams.each_with_object(Hash.new {|h, k| h[k] = {success: 0, total: 0}}) do |game_team, wins|
-      next if !game_ids.include?(game_team.game_id)
-      wins[game_team.head_coach][:total] += 1
-      wins[game_team.head_coach][:success] += 1 if game_team.result == "WIN"
-    end
-  end
-
   def winningest_coach(season_id)
-    max_avg(wins_by_coach(season_id)).first
+    SeasonStats.winningest_coach(game_teams_by_season(season_id))
   end
 
   def worst_coach(season_id)
-    min_avg(wins_by_coach(season_id)).first
+    SeasonStats.worst_coach(game_teams_by_season(season_id))
   end
 
   def most_accurate_team(season_id)
