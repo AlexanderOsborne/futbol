@@ -1,7 +1,6 @@
 require_relative './games_collection'
 require_relative './teams_collection'
 require_relative './game_teams_collection'
-require 'csv'
 
 class StatTracker
   attr_reader :games, :teams, :game_teams

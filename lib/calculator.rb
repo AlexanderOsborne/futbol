@@ -28,14 +28,6 @@ module Calculator
     high(avg(hash))
   end
 
-  def win_pct(hash)
-    value = hash.values.each_with_object(Hash.new(0)) do |data_set, sum|
-      sum[:success] += data_set[:success]
-      sum[:total] += data_set[:total]
-    end
-    (value[:success].to_f / value[:total]).round(2)
-  end
-
   def combine(hash1, hash2)
     hash1.merge(hash2) do |key, games, goals|
       (goals.to_f / games).round(2)

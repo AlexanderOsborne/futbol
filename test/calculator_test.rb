@@ -36,11 +36,6 @@ class CalculatorTest < Minitest::Test
     assert_equal ["3", 4.75], max_avg(@each_with_objectable)
   end
 
-  def test_win_pct
-
-    assert_equal 0.25, win_pct(@ble)
-  end
-
   def test_combine
 
     assert_equal ({"20122013"=>1.33, "20132014"=>2.0}), combine(@hashibl_lector, @hashibl_lector2)

@@ -5,6 +5,7 @@ require 'csv'
 class GamesCollectionTest < Minitest::Test
 
   def setup
+
     @gamescollection = GamesCollection.new('./data/games_dummy.csv')
   end
 
@@ -21,6 +22,7 @@ class GamesCollectionTest < Minitest::Test
   def test_create_games
 
     @gamescollection.create_games('./data/games_dummy.csv')
+
     assert_equal 13, @gamescollection.games.length
   end
 
@@ -55,6 +57,7 @@ class GamesCollectionTest < Minitest::Test
   end
 
   def test_wins_by_hoa
+
     assert_equal 7, @gamescollection.wins_by_hoa("home")
     assert_equal 5, @gamescollection.wins_by_hoa("away")
     assert_equal 1, @gamescollection.wins_by_hoa("tie")
@@ -63,6 +66,7 @@ class GamesCollectionTest < Minitest::Test
   def test_count_of_games_by_season
 
     expected = {"20122013"=> 12, "20132014"=> 1}
+
     assert_equal expected, @gamescollection.count_of_games_by_season
   end
 
@@ -74,6 +78,7 @@ class GamesCollectionTest < Minitest::Test
   def test_average_goals_by_season
 
     expected = {"20122013"=> 3.50, "20132014"=> 2.00}
+
     assert_equal expected, @gamescollection.average_goals_by_season
   end
 
@@ -94,6 +99,7 @@ class GamesCollectionTest < Minitest::Test
   end
 
   def test_goals_scored_by_team
+   
     expected = {"2012030231"=>2, "2012030232"=>1, "2012030233"=>1, "2012030234"=>0}
 
     assert_equal expected, @gamescollection.goals_scored_by_team("16")
@@ -110,12 +116,16 @@ class GamesCollectionTest < Minitest::Test
   end
 
   def test_team_wins_by_opponent
+
     expected = {"17"=>{:success=>1, :total=>4}}
+
     assert_equal expected, @gamescollection.team_wins_by_opponent("16")
   end
 
   def test_team_wins_by_season
+
     expected = {"17"=>{:success=>1, :total=>4}}
+
     assert_equal expected, @gamescollection.team_wins_by_opponent("16")
   end
 
@@ -127,5 +137,12 @@ class GamesCollectionTest < Minitest::Test
   def test_rival
 
     assert_equal "3", @gamescollection.rival("6")
+  end
+
+  def test_win_pct
+
+    expected = {"17"=>{:success=>1, :total=>4}}
+    
+    assert_equal 0.25, (@gamescollection.win_pct(expected))
   end
 end

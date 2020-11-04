@@ -5,6 +5,7 @@ class GameTeamsCollection
   include Calculator
 
   attr_reader :game_teams
+  
   def initialize(game_teams_path)
     @game_teams = create_game_teams(game_teams_path)
   end

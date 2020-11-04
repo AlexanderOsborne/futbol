@@ -128,4 +128,12 @@ class GamesCollection
   def rival(team_id)
     min_avg(team_wins_by_opponent(team_id)).first
   end
+  
+  def win_pct(hash)
+    value = hash.values.each_with_object(Hash.new(0)) do |data_set, sum|
+      sum[:success] += data_set[:success]
+      sum[:total] += data_set[:total]
+    end
+    (value[:success].to_f / value[:total]).round(2)
+  end
 end
