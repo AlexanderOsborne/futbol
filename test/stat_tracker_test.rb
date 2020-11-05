@@ -2,6 +2,7 @@ require_relative './test_helper'
 require './lib/stat_tracker'
 
 class StatTrackerTest < Minitest::Test
+
   def setup
     game_path = './data/games_dummy.csv'
     team_path = './data/teams.csv'
@@ -47,6 +48,7 @@ class StatTrackerTest < Minitest::Test
   def test_count_of_games_by_season
 
     expected = {"20122013"=> 12, "20132014"=> 1}
+
     assert_equal expected, @stattracker.count_of_games_by_season
   end
 
@@ -58,6 +60,7 @@ class StatTrackerTest < Minitest::Test
   def test_average_goals_by_season
 
     expected = {"20122013"=> 3.50, "20132014"=> 2.00}
+
     assert_equal expected, @stattracker.average_goals_by_season
   end
 
@@ -97,6 +100,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_team_info
+
     expected = {
       "team_id" => "18",
       "franchise_id" => "34",
@@ -104,6 +108,7 @@ class StatTrackerTest < Minitest::Test
       "abbreviation" => "MIN",
       "link" => "/api/v1/teams/18"
     }
+    
     assert_equal expected, @stattracker.team_info("18")
   end
 

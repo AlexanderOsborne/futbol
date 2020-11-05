@@ -14,6 +14,7 @@ class TeamTest < Minitest::Test
   end
 
   def test_it_exists_and_has_attributes
+    
     assert_instance_of Team, @team
     assert_equal "1", @team.team_id
     assert_equal "23", @team.franchiseid
@@ -22,12 +23,14 @@ class TeamTest < Minitest::Test
   end
 
   def test_team_info
+
     expected = {"team_id"=>"1",
                 "franchise_id"=>"23",
                 "team_name"=>"Atlanta United",
                 "abbreviation"=>"ATL",
                 "link"=>"/api/v1/teams/1"
               }
+
     assert_equal expected, @team.team_info
   end
 end
